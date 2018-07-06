@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        mChart.isFocusableInTouchMode();
+
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
@@ -78,13 +78,14 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         });
 
         CombinedData data = new CombinedData();
-
         data.setData(generateLineData());
-        //data.setData(generateBarData());
+        data.setData(generateBarData());
+        mChart.notifyDataSetChanged();
 
         xAxis.setAxisMaximum(data.getXMax() + 0.25f);
         mChart.setData(data);
-        mChart.invalidate();
+
+       mChart.invalidate();
 
         mChart.animateX(1333, Easing.EasingOption.EaseInCirc);
         mChart.animateY(1333, Easing.EasingOption.EaseInOutBack);
@@ -94,14 +95,14 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             "1,000$", "2,000$", "10,000$", "50,000$", "100,000$", "150,000$","200,000$","250,000$","300,000$","400,000$","500,000$"
     };
 
-    private LineData generateLineData() {
+    private LineData generateLineData() throws ArrayIndexOutOfBoundsException {
 
         LineData d = new LineData();
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         entries = getLineEntriesData(entries);
-
+        d.notifyDataChanged();
         LineDataSet set = new LineDataSet(entries, "Speed");
         //set.setColor(Color.rgb(240, 238, 70));
         set.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -123,27 +124,29 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     }
 
     private ArrayList<Entry> getLineEntriesData(ArrayList<Entry> entries) {
-        entries.add(new Entry(1, 250));
-        entries.add(new Entry(2, 240));
-        entries.add(new Entry(3, 260));
-        entries.add(new Entry(4, 220));
-        entries.add(new Entry(5, 280));
-        entries.add(new Entry(6, 320));
-        entries.add(new Entry(7, 295));
-        entries.add(new Entry(8, 250));
-        entries.add(new Entry(9, 300));
-        entries.add(new Entry(10, 367));
+        entries.add(new Entry(0, 250));
+        entries.add(new Entry(1, 240));
+        entries.add(new Entry(2, 260));
+        entries.add(new Entry(3, 220));
+        entries.add(new Entry(4, 280));
+        entries.add(new Entry(5, 320));
+        entries.add(new Entry(6, 295));
+        entries.add(new Entry(7, 250));
+        entries.add(new Entry(8, 300));
+        entries.add(new Entry(9, 367));
 
         return entries;
     }
 
-    private BarData generateBarData() {
+    private BarData generateBarData() throws ArrayIndexOutOfBoundsException{
 
 
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
         entries = getBarEnteries(entries);
 
         BarDataSet set1 = new BarDataSet(entries, "Bar");
+        BarData d = new BarData(set1);
+        d.notifyDataChanged();
         //set1.setColor(Color.rgb(60, 220, 78));
         set1.setColors(ColorTemplate.COLORFUL_COLORS);
         set1.setValueTextColor(Color.rgb(60, 220, 78));
@@ -154,26 +157,27 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         float barWidth = 0.45f; // x2 dataset
 
 
-       BarData d = new BarData(set1);
+
 
 
         d.setBarWidth(barWidth);
+
 
 
         return d;
     }
 
     private ArrayList<BarEntry> getBarEnteries(ArrayList<BarEntry> entries) {
-        entries.add(new BarEntry(1, 1650));
-        entries.add(new BarEntry(2, 1678));
-        entries.add(new BarEntry(3, 1590));
-        entries.add(new BarEntry(4, 2550));
-        entries.add(new BarEntry(5, 1671));
-        entries.add(new BarEntry(6, 1389));
-        entries.add(new BarEntry(7, 1430));
-        entries.add(new BarEntry(8, 1535));
-        entries.add(new BarEntry(9, 1760));
-        entries.add(new BarEntry(10, 1352));
+        entries.add(new BarEntry(0, 1650));
+        entries.add(new BarEntry(1, 1678));
+        entries.add(new BarEntry(2, 1590));
+        entries.add(new BarEntry(3, 2550));
+        entries.add(new BarEntry(4, 1671));
+        entries.add(new BarEntry(5, 1389));
+        entries.add(new BarEntry(6, 1430));
+        entries.add(new BarEntry(7, 1535));
+        entries.add(new BarEntry(8, 1760));
+        entries.add(new BarEntry(9, 1352));
         return entries;
     }
 
